@@ -27,7 +27,7 @@ router.post('/', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No image file provided' });
   }
-  const url = `http://localhost:${process.env.PORT || 3000}/uploads/${req.file.filename}`;
+  const url = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
   res.json({ url, filename: req.file.filename });
 });
 
