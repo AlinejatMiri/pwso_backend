@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import Project from './models/Project.js';
 import BlogPost from './models/BlogPost.js';
 import GalleryImage from './models/GalleryImage.js';
 import Faq from './models/Faq.js';
 import Partner from './models/Partner.js';
 import TeamMember from './models/TeamMember.js';
+import Admin from './models/Admin.js';
 
 dotenv.config();
 
@@ -246,9 +248,11 @@ async function seed() {
       Faq.deleteMany({}),
       Partner.deleteMany({}),
       TeamMember.deleteMany({}),
+      Admin.deleteMany({}),
     ]);
     console.log('Cleared existing data');
 
+    const hashedPassword = await bcrypt.hash('pwso123', 10);
     await Promise.all([
       Project.insertMany(projects),
       BlogPost.insertMany(blogPosts),
@@ -256,6 +260,7 @@ async function seed() {
       Faq.insertMany(faqs),
       Partner.insertMany(partners),
       TeamMember.insertMany(teamMembers),
+      Admin.create({ username: 'pwso', password: hashedPassword }),
     ]);
     console.log('Seed data inserted successfully');
 
