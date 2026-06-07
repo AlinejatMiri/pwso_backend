@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = Router();
 
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: path.join(__dirname, '..', 'uploads'),
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname));
   }
